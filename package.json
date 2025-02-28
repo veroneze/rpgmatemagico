@@ -1,7 +1,7 @@
 {
   "name": "rpgm",
   "main": "expo-router/entry",
-  "homepage": "https://veroneze.github.io/rpgmatemagico",
+  "homepage": "https://veroneze.github.io/rpgmatemagico/",
   "version": "1.0.0",
   "scripts": {
     "predeploy": "npm run build",
