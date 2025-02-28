@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "homepage": "https://veroneze.github.io/rpgmatemagico/",
   "version": "1.0.0",
+  "private": false,
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
@@ -53,6 +54,5 @@
     "jest-expo": "~52.0.4",
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
-  },
-  "private": true
+  }
 }
