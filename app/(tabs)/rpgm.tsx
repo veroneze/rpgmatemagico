@@ -1,4 +1,3 @@
-// git remote add origin https://github.com/veroneze/rpgmatemagico.git
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -284,10 +283,7 @@ const MathGame = () => {
         newXP[gameState.currentWorld] += xpGain;
 
         if (currentEnemy.isBonus) {
-          Alert.alert(
-            "Bonus Square!",
-            `You found a bonus square! +${xpGain} XP!`,
-          );
+          Alert.alert("Bonus Square!", `You found a bonus square! +${xpGain} XP!`);
         }
 
         const newState = {
@@ -306,7 +302,7 @@ const MathGame = () => {
             };
             Alert.alert(
               "Congratulations!",
-              `You've completed all worlds and defeated the boss! Moving to numbers ${newRange.min}-${newRange.max}!`,
+              `You've completed all worlds and defeated the boss! Moving to numbers ${newRange.min}-${newRange.max}!`
             );
             newState.numberRange = newRange;
             newState.worldsCompleted++;
@@ -384,125 +380,137 @@ const MathGame = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <WorldSelector />
+    <View style={styles.outerContainer}>
+      <View style={styles.innerContainer}>
+        <WorldSelector />
 
-      <Text
-        style={[
-          styles.worldTitle,
-          { color: getWorldColor(gameState.currentWorld) },
-        ]}
-      >
-        {worlds[gameState.currentWorld].name}
-        {gameState.numberRange.min > 1 &&
-          ` (${gameState.numberRange.min}-${gameState.numberRange.max})`}
-      </Text>
+        <Text
+          style={[
+            styles.worldTitle,
+            { color: getWorldColor(gameState.currentWorld) },
+          ]}
+        >
+          {worlds[gameState.currentWorld].name}
+          {gameState.numberRange.min > 1 &&
+            ` (${gameState.numberRange.min}-${gameState.numberRange.max})`}
+        </Text>
 
-      <View style={styles.grid}>
-        {gameState.grid.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map((cell, colIndex) => (
-              <TouchableOpacity
-                key={colIndex}
-                style={[
-                  styles.cell,
-                  cell && styles.cellWithEnemy,
-                  cell?.defeated && styles.cellDefeated,
-                ]}
-                onPress={() => handleSquarePress(rowIndex, colIndex)}
-                disabled={!cell || cell.defeated}
-              />
-            ))}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.xpContainer}>
-        <Text style={styles.xpTitle}>World Progress</Text>
-        {Object.entries(gameState.xp).map(([world, points]) => (
-          <View key={world} style={styles.xpRow}>
-            <Text style={styles.xpText}>
-              {worlds[world].name}: {points} XP
-            </Text>
-            <View style={styles.xpBarContainer}>
-              <View
-                style={[
-                  styles.xpBar,
-                  {
-                    width: `${Math.min(points, 100)}%`,
-                    backgroundColor: getWorldColor(world),
-                  },
-                ]}
-              />
+        <View style={styles.grid}>
+          {gameState.grid.map((row, rowIndex) => (
+            <View key={rowIndex} style={styles.row}>
+              {row.map((cell, colIndex) => (
+                <TouchableOpacity
+                  key={colIndex}
+                  style={[
+                    styles.cell,
+                    cell && styles.cellWithEnemy,
+                    cell?.defeated && styles.cellDefeated,
+                  ]}
+                  onPress={() => handleSquarePress(rowIndex, colIndex)}
+                  disabled={!cell || cell.defeated}
+                />
+              ))}
             </View>
-          </View>
-        ))}
-      </View>
+          ))}
+        </View>
 
-      <Modal
-        visible={gameState.battleMode}
-        transparent={true}
-        animationType="fade"
-      >
-        <View style={styles.modalContainer}>
-          <View
-            style={[
-              styles.battleBox,
-              { borderColor: getWorldColor(gameState.currentWorld) },
-            ]}
-          >
-            <Text
+        <View style={styles.xpContainer}>
+          <Text style={styles.xpTitle}>World Progress</Text>
+          {Object.entries(gameState.xp).map(([world, points]) => (
+            <View key={world} style={styles.xpRow}>
+              <Text style={styles.xpText}>
+                {worlds[world].name}: {points} XP
+              </Text>
+              <View style={styles.xpBarContainer}>
+                <View
+                  style={[
+                    styles.xpBar,
+                    {
+                      width: `${Math.min(points, 100)}%`,
+                      backgroundColor: getWorldColor(world),
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          ))}
+        </View>
+
+        <Modal
+          visible={gameState.battleMode}
+          transparent={true}
+          animationType="fade"
+        >
+          <View style={styles.modalContainer}>
+            <View
               style={[
-                styles.battleWorldTitle,
-                { color: getWorldColor(gameState.currentWorld) },
+                styles.battleBox,
+                { borderColor: getWorldColor(gameState.currentWorld) },
               ]}
             >
-              {worlds[gameState.currentWorld].name}
-            </Text>
-            <Text style={styles.battleProgress}>
-              Question {gameState.questionIndex + 1} of{" "}
-              {gameState.questions.length}
-            </Text>
-            <Text style={styles.questionText}>
-              {gameState.currentQuestion?.question}
-            </Text>
-            <TextInput
-              style={styles.answerInput}
-              value={gameState.answer}
-              onChangeText={(text) =>
-                setGameState((prev) => ({ ...prev, answer: text }))
-              }
-              keyboardType="numeric"
-              autoFocus
-              onSubmitEditing={handleAnswerSubmit}
-            />
-            <View style={styles.battleButtons}>
-              <TouchableOpacity
+              <Text
                 style={[
-                  styles.submitButton,
-                  { backgroundColor: getWorldColor(gameState.currentWorld) },
+                  styles.battleWorldTitle,
+                  { color: getWorldColor(gameState.currentWorld) },
                 ]}
-                onPress={handleAnswerSubmit}
               >
-                <Text style={styles.buttonText}>Submit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.exitButton}
-                onPress={() =>
-                  setGameState((prev) => ({ ...prev, battleMode: false }))
+                {worlds[gameState.currentWorld].name}
+              </Text>
+              <Text style={styles.battleProgress}>
+                Question {gameState.questionIndex + 1} of{" "}
+                {gameState.questions.length}
+              </Text>
+              <Text style={styles.questionText}>
+                {gameState.currentQuestion?.question}
+              </Text>
+              <TextInput
+                style={styles.answerInput}
+                value={gameState.answer}
+                onChangeText={(text) =>
+                  setGameState((prev) => ({ ...prev, answer: text }))
                 }
-              >
-                <Text style={styles.buttonText}>Exit</Text>
-              </TouchableOpacity>
+                keyboardType="numeric"
+                autoFocus
+                onSubmitEditing={handleAnswerSubmit}
+              />
+              <View style={styles.battleButtons}>
+                <TouchableOpacity
+                  style={[
+                    styles.submitButton,
+                    { backgroundColor: getWorldColor(gameState.currentWorld) },
+                  ]}
+                  onPress={handleAnswerSubmit}
+                >
+                  <Text style={styles.buttonText}>Submit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.exitButton}
+                  onPress={() =>
+                    setGameState((prev) => ({ ...prev, battleMode: false }))
+                  }
+                >
+                  <Text style={styles.buttonText}>Exit</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  innerContainer: {
+    width: 400,
+    padding: 16,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
